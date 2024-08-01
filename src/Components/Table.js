@@ -2,7 +2,7 @@ import MyButton from "./TableComponents/Button";
 import MyInput from "./TableComponents/MyInput";
 import Element from "./TableComponents/Element";
 import { useState, useEffect } from "react";
-const itemsPerPage = 20;
+
 
 export default function Table({ nav }) {
   const [name, setName] = useState("");
@@ -11,7 +11,7 @@ export default function Table({ nav }) {
   const [page, setPage] = useState(1);
 
   const handleNextPage = () =>
-    page * itemsPerPage < characters.info.count
+    page * 20 < characters?.info?.count
       ? setPage((prevPage) => prevPage + 1)
       : "";
 
@@ -22,7 +22,6 @@ export default function Table({ nav }) {
   function handleGenderChange() {
     if (gender === "") {
       setGender("Male");
-      console.log(gender)
     } else if (gender === "Male") {
       setGender("Female");
     }else{
@@ -57,7 +56,7 @@ export default function Table({ nav }) {
         return res.json();
       })
       .then((e) => {
-        console.log(e);
+        console.log(e)
         setCharacters(e);
       });
   }, [name, page, nav, gender, status]);
@@ -65,25 +64,29 @@ export default function Table({ nav }) {
   
 
   return (
-    <div className="bg-green-700 h-full pt-2 flex cursor-default justify-evenly">
+    <div data-testid="table" className="bg-green-700 h-full pt-2 flex cursor-default justify-evenly">
       <div className="h-full m-10 w-2/3">
         <div className="h-10 flex items-center font-bold text-xl text-white justify-evenly  p-5 border-t-4 border-x-4 border-rnmYellow px-5 pt-8">
           {nav === "All" ? "" : <MyInput func={setName} nav={nav} />}
-          <div>
-            <MyButton text={"<"} active={page !== 1} type="forward" func={handleBackPage} />
+          <div data-testid="pageNumber">
+            <MyButton id="prev" text={"<"} active={page !== 1} type="forward" func={handleBackPage} />
             {page}
             <MyButton
+              id="next"
               text={">"}
               type="forward"
-              active={page * itemsPerPage < characters?.info?.count}
+              active={page * 20 < characters?.info?.count}
               func={handleNextPage}
             />
           </div>
           <MyButton
+            id="gender"
             text={gender ? gender : "Gender"}
             func={handleGenderChange}
+            
           />
           <MyButton
+            id="status"
             text={status ? status : "Status"}
             func={handleStatusChange}
           />

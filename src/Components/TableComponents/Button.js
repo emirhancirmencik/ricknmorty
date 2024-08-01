@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function Button(
-  { text, func, active = true, type=text },
+  { text, func, active = true, type=text,id },
 ) {
   let disabledStyle = `bg-rnmYellowDark hover:bg-white-950 rounded-sm text-gray-800 text-xl m-1 px-4`;
   let activeStyle = `bg-rnmYellow hover:bg-yellow-300 hover:cursor-default rounded-sm text-white text-xl m-1 px-4`;
@@ -20,6 +20,7 @@ export default function Button(
 
   return (
     <button
+      data-testid={id}
       disabled={!active}
       className={
         type === "forward"

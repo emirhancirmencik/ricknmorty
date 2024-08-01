@@ -9,7 +9,7 @@ function App() {
 
   return (
     <div className="h-screen w-screen overflow-x-hidden bg-green-700 pb-10">
-      <Header nav={nav} func={setNav}/>
+      <Header data-testid="header" nav={nav} func={setNav}/>
       <HeroSection/>
       <Table nav={nav} />
     </div>
