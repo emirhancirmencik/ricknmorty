@@ -52,9 +52,9 @@ export default function Table({ nav }) {
   useEffect(() => {
     setLoading(true)
     fetch(
-      nav === "Name" && name.length >= 3
-        ? `https://rickandmortyapi.com/api/character/?page=${page}&name=${name}&gender=${gender}&status=${status}`
-        : `https://rickandmortyapi.com/api/character/?page=${page}&gender=${gender}&status=${status}`
+  
+         `https://rickandmortyapi.com/api/character/?page=${page}&name=${name}&gender=${gender}&status=${status}`
+       
     )
       .then((res) => {
         return res.json();
