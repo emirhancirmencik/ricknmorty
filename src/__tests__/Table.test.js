@@ -47,14 +47,66 @@ test('renders a button that changes status filter', () => {
 
 test('renders buttons that navigate pages', async () => {
     render(<Table nav="All"/>)
+
+    await screen.findByTestId("fetchedData")
+    
     const nextButton = screen.getByTestId("next");
     const prevButton = screen.queryByTestId("prev");
-
     
     expect(screen.getByTestId('pageNumber')).toBeInTheDocument();
+    await screen.findByTestId("fetchedData")
     fireEvent.click(nextButton);
-    await waitFor(async () => await expect(screen.getByTestId("pageNumber")).toBeInTheDocument());
+    expect(screen.getByTestId('pageNumber').textContent).toBe("2");
     
     fireEvent.click(prevButton);
-    await waitFor(async () => await expect(screen.getByTestId("pageNumber")).toBeInTheDocument());
+    expect(screen.getByTestId('pageNumber').textContent).toBe("1");
+  });
+
+
+  test('renders input that filters characters by name', async () => {
+    render(<Table nav="Name"/>)
+
+    await screen.findByTestId("loaded")
+    
+    const nameInput = screen.getByTestId("nameInput")
+
+    let countBeforeRicks = 0;
+    let countAfterRicks = 0;
+
+    await waitFor(() => screen.findAllByTestId("element").then(
+      (e) => {
+        e.forEach((i) => {
+          if(i.textContent.toLowerCase().includes("rick")){
+            countBeforeRicks++;
+          }
+        })
+      }
+    ))
+    
+    fireEvent.change(nameInput, {target: {value:"rick"}})
+    
+    expect(nameInput.value).toBe("rick")
+
+    await screen.findByTestId("loading")
+    
+   
+    await screen.findByTestId("loaded")
+    
+    
+      
+    await screen.findByTestId("fetchedData")
+    await screen.findByTestId("fetchedData")
+
+    await waitFor(() => screen.findAllByTestId("element").then(
+      (e) => {
+        e.forEach((i) => {
+          if(i.textContent.toLowerCase().includes("rick")){
+            countAfterRicks++;
+          }
+        })
+      }
+    ))
+
+    expect(countAfterRicks).toBeGreaterThanOrEqual(countBeforeRicks)
+
   });
